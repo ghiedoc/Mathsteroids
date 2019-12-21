@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,11 +23,12 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class GameActivity extends AppCompatActivity {
 
-    Dialog epicDialog, pauseDialog;
+    Dialog epicDialog, pauseDialog, nameDialog;
     ImageView closePopupPositiveImg;
     TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore;
+    EditText etName;
     ImageView iv1, iv2, iv3, iv4, ivPause;
-    Button  btnAccept, resumeBtn, restartBtn, exitBtn;
+    Button  btnAccept, resumeBtn, restartBtn, exitBtn, submitBtn;
     Question question;
     Game g;
     Animation animation;
@@ -48,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
 
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
+        nameDialog = new Dialog(this);
 
         ivPause = findViewById(R.id.ivPause);
 
@@ -127,12 +130,13 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(ivPause).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gamePause();
+                showPause();
             }
         });
 
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
+        nameDialog = new Dialog(this);
 
         /**
          * Moving Background on the Main Activity in loop
@@ -226,11 +230,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
-        closePopupPositiveImg = (ImageView) epicDialog.findViewById(R.id.closePopupPositiveImg);
-        btnAccept = (Button) epicDialog.findViewById(R.id.btnAccept);
-        popUpScore = (TextView) epicDialog.findViewById(R.id.popUpScore);
-        messageTv = (TextView) epicDialog.findViewById(R.id.messageTv);
-        titleTv = (TextView) epicDialog.findViewById(R.id.titleTv);
+        closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
+        btnAccept = epicDialog.findViewById(R.id.btnAccept);
+        popUpScore = epicDialog.findViewById(R.id.popUpScore);
+        messageTv = epicDialog.findViewById(R.id.messageTv);
+        titleTv = epicDialog.findViewById(R.id.titleTv);
 
         popUpScore.setText(g.difficulty);
         btnAccept.setText("Next");
@@ -258,11 +262,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void showFail() {
         epicDialog.setContentView(R.layout.next_level_pop);
-        closePopupPositiveImg = (ImageView) epicDialog.findViewById(R.id.closePopupPositiveImg);
-        btnAccept = (Button) epicDialog.findViewById(R.id.btnAccept);
-        popUpScore = (TextView) epicDialog.findViewById(R.id.popUpScore);
-        messageTv = (TextView) epicDialog.findViewById(R.id.messageTv);
-        titleTv = (TextView) epicDialog.findViewById(R.id.titleTv);
+        closePopupPositiveImg =  epicDialog.findViewById(R.id.closePopupPositiveImg);
+        btnAccept = epicDialog.findViewById(R.id.btnAccept);
+        popUpScore = epicDialog.findViewById(R.id.popUpScore);
+        messageTv = epicDialog.findViewById(R.id.messageTv);
+        titleTv = epicDialog.findViewById(R.id.titleTv);
         titleTv.setText("Failed");
         btnAccept.setText("Retry");
         messageTv.setText("You've failed to accomplish\nthe challenge\nyour score:");
@@ -293,10 +297,10 @@ public class GameActivity extends AppCompatActivity {
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg = (ImageView) epicDialog.findViewById(R.id.closePopupPositiveImg);
-        btnAccept = (Button) epicDialog.findViewById(R.id.btnAccept);
-        popUpScore = (TextView) epicDialog.findViewById(R.id.popUpScore);
-        messageTv = (TextView) epicDialog.findViewById(R.id.messageTv);
-        titleTv = (TextView) epicDialog.findViewById(R.id.titleTv);
+        btnAccept = epicDialog.findViewById(R.id.btnAccept);
+        popUpScore = epicDialog.findViewById(R.id.popUpScore);
+        messageTv = epicDialog.findViewById(R.id.messageTv);
+        titleTv = epicDialog.findViewById(R.id.titleTv);
 
         titleTv.setText("CONGRATS!");
         btnAccept.setText("Next");
@@ -310,11 +314,19 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                epicDialog.dismiss();
+                showEnterName();
+            }
+        });
+
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
     }
 
-    public void gamePause(){
+    public void showPause(){
         pauseDialog.setContentView(R.layout.pause_pop);
         resumeBtn = pauseDialog.findViewById(R.id.resumeBtn);
         restartBtn = pauseDialog.findViewById(R.id.restartBtn);
@@ -337,5 +349,11 @@ public class GameActivity extends AppCompatActivity {
 
         pauseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pauseDialog.show();
+    }
+
+    public void showEnterName(){
+        nameDialog.setContentView(R.layout.enter_name_pop);
+        etName = nameDialog.findViewById(R.id.etName);
+        submitBtn = nameDialog.findViewById(R.id.submitBtn);
     }
 }
