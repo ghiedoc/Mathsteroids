@@ -130,6 +130,28 @@ public class GameActivity extends AppCompatActivity {
 
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
+
+        /**
+         * Moving Background on the Main Activity in loop
+         */
+        final ImageView backgroundOne = findViewById(R.id.game_bg_one);
+        final ImageView backgroundTwo = findViewById(R.id.game_bg_two);
+
+        final ValueAnimator animator = ValueAnimator.ofFloat(0.0f, 1.0f);
+        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.setDuration(10000L);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                final float progress = (float) animation.getAnimatedValue();
+                final float width = backgroundOne.getWidth();
+                final float translationX = width * progress;
+                backgroundOne.setTranslationX(translationX);
+                backgroundTwo.setTranslationX(translationX - width);
+            }
+        });
+        animator.start();
     }
 
     private void checkQuestionNum() {
@@ -207,24 +229,24 @@ public class GameActivity extends AppCompatActivity {
         messageTv = (TextView) epicDialog.findViewById(R.id.messageTv);
         titleTv = (TextView) epicDialog.findViewById(R.id.titleTv);
 
-
         popUpScore.setText(g.difficulty);
         btnAccept.setText("Next");
 
-        closePopupPositiveImg.setOnClickListener(new View.OnClickListener() {
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 epicDialog.dismiss();
             }
         });
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
+        PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 nextTurn();
                 epicDialog.dismiss();
             }
         });
+
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
 
@@ -243,20 +265,22 @@ public class GameActivity extends AppCompatActivity {
         messageTv.setText("You've failed to accomplish\nthe challenge\nyour score:");
         popUpScore.setText(Integer.toString(g.getScore()));
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
+        PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 startGame();
                 epicDialog.dismiss();
             }
         });
 
-        closePopupPositiveImg.setOnClickListener(new View.OnClickListener() {
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                epicDialog.dismiss();
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
+                startActivity(intent);
             }
         });
+
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
 
@@ -276,12 +300,13 @@ public class GameActivity extends AppCompatActivity {
         messageTv.setText("You completed all the challenges");
         popUpScore.setText(Integer.toString(g.getScore()));
 
-        closePopupPositiveImg.setOnClickListener(new View.OnClickListener() {
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 epicDialog.dismiss();
             }
         });
+
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
     }

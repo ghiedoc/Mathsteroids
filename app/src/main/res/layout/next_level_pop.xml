@@ -32,8 +32,8 @@
 
             <ImageView
                 android:id="@+id/closePopupPositiveImg"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:clickable="true"
                 android:elevation="10dp"
