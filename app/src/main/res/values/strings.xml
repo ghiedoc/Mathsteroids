@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Mathsteroids</string>
+    <string name="popup_text_default">You completed the challenge!</string>
+</resources>
