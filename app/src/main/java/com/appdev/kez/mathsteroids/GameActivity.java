@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -76,6 +77,8 @@ public class GameActivity extends AppCompatActivity {
         tvQuestion.setText("");
         tvScore.setText("0");
         startGame();
+
+//        final MediaPlayer hit = new MediaPlayer.create(this, )
 
 
         View.OnClickListener answerButtonClickListener1 = new View.OnClickListener() {
