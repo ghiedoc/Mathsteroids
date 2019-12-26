@@ -200,7 +200,7 @@
             android:fontFamily="@font/righteous_regular"
             android:text="Question"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="40sp" />
 
 
     </android.support.v7.widget.CardView>

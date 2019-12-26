@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,8 +32,10 @@ public class GameActivity extends AppCompatActivity {
     Game g;
     Animation animation;
     Animation animation1;
-
     int score;
+
+    //Initialize Class
+    private SoundPlayer sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_game);
+
+        sound = new SoundPlayer(this);
 
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
@@ -92,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
                 g.checkAnswer(answerSelected);
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
+                sound.playHitSound();
             }
         };
 
@@ -102,6 +106,7 @@ public class GameActivity extends AppCompatActivity {
                 g.checkAnswer(answerSelected);
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
+                sound.playHitSound();
             }
         };
         View.OnClickListener answerButtonClickListener3 = new View.OnClickListener() {
@@ -111,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
                 g.checkAnswer(answerSelected);
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
+                sound.playHitSound();
             }
         };
         View.OnClickListener answerButtonClickListener4 = new View.OnClickListener() {
@@ -120,6 +126,7 @@ public class GameActivity extends AppCompatActivity {
                 g.checkAnswer(answerSelected);
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
+                sound.playHitSound();
             }
         };
 
@@ -240,6 +247,7 @@ public class GameActivity extends AppCompatActivity {
 
         popUpScore.setText(g.difficulty);
         btnAccept.setText("Next");
+        sound.playWinSound();
 
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,10 +277,12 @@ public class GameActivity extends AppCompatActivity {
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
         titleTv = epicDialog.findViewById(R.id.titleTv);
-        titleTv.setText("Failed");
+        titleTv.setText("Failed!");
         btnAccept.setText("Retry");
-        messageTv.setText("You've failed to accomplish\nthe challenge\nyour score:");
+        messageTv.setText("You've failed to accomplish the challenge!");
         popUpScore.setText(Integer.toString(g.getScore()));
+
+        sound.playOverSound();
 
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -298,15 +308,15 @@ public class GameActivity extends AppCompatActivity {
 
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
-        closePopupPositiveImg = (ImageView) epicDialog.findViewById(R.id.closePopupPositiveImg);
+        closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
         titleTv = epicDialog.findViewById(R.id.titleTv);
 
-        titleTv.setText("CONGRATS!");
+        titleTv.setText("Congratulations!");
         btnAccept.setText("Next");
-        messageTv.setText("You completed all the challenges");
+        messageTv.setText("You completed all the challenges!");
         popUpScore.setText(Integer.toString(g.getScore()));
 
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
@@ -334,9 +344,12 @@ public class GameActivity extends AppCompatActivity {
         restartBtn = pauseDialog.findViewById(R.id.restartBtn);
         exitBtn = pauseDialog.findViewById(R.id.exitBtn);
 
+        sound.playClicked();
+
         PushDownAnim.setPushDownAnimTo(resumeBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 pauseDialog.dismiss();
             }
         });
@@ -344,6 +357,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(exitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
                 startActivity(intent);
             }

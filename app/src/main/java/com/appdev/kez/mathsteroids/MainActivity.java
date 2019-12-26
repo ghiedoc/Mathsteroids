@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivAbout, ivSound;
     MediaPlayer mediaPlayer;
 
-
+    //Initialize Class
+    private SoundPlayer sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        sound = new SoundPlayer(this);
+
         playBtn = findViewById(R.id.playBtn);
         exitBtn = findViewById(R.id.exitBtn);
         ivAbout = findViewById(R.id.ivAbout);
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 Toast.makeText(MainActivity.this, "Play", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, com.appdev.kez.mathsteroids.GameActivity.class);
                 startActivity(intent);
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(exitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Are you sure you want to exit?")
                         .setCancelable(false)
