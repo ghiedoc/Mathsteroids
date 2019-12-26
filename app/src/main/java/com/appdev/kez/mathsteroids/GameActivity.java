@@ -23,9 +23,9 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class GameActivity extends AppCompatActivity {
 
-    Dialog epicDialog, pauseDialog, nameDialog;
+    Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog;
     ImageView closePopupPositiveImg;
-    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore;
+    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore, tvName;
     EditText etName;
     ImageView iv1, iv2, iv3, iv4, ivPause;
     Button  btnAccept, resumeBtn, restartBtn, exitBtn, submitBtn;
@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
         nameDialog = new Dialog(this);
+        highScoreDialog = new Dialog(this);
 
         ivPause = findViewById(R.id.ivPause);
 
@@ -137,6 +138,7 @@ public class GameActivity extends AppCompatActivity {
         epicDialog = new Dialog(this);
         pauseDialog = new Dialog(this);
         nameDialog = new Dialog(this);
+        highScoreDialog = new Dialog(this);
 
         /**
          * Moving Background on the Main Activity in loop
@@ -347,6 +349,13 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PushDownAnim.setPushDownAnimTo(restartBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showHighScore();
+            }
+        });
+
         pauseDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pauseDialog.show();
     }
@@ -355,5 +364,11 @@ public class GameActivity extends AppCompatActivity {
         nameDialog.setContentView(R.layout.enter_name_pop);
         etName = nameDialog.findViewById(R.id.etName);
         submitBtn = nameDialog.findViewById(R.id.submitBtn);
+    }
+
+    public void showHighScore(){
+        highScoreDialog.setContentView(R.layout.high_score_pop);
+        tvName = highScoreDialog.findViewById(R.id.tvName);
+        tvScore = highScoreDialog.findViewById(R.id.tvScore);
     }
 }
