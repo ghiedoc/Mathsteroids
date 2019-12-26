@@ -21,7 +21,7 @@ public class SoundPlayer {
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
 
         hitSound = soundPool.load(context, R.raw.shoot, 1);
-        overSound = soundPool.load(context, R.raw.lose,1);
+        overSound = soundPool.load(context, R.raw.failed,1);
         winSound = soundPool.load(context, R.raw.win,1);
         clickSound = soundPool.load(context, R.raw.click, 1);
 

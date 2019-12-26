@@ -319,6 +319,8 @@ public class GameActivity extends AppCompatActivity {
         messageTv.setText("You completed all the challenges!");
         popUpScore.setText(Integer.toString(g.getScore()));
 
+        sound.playWinSound();
+
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -366,7 +368,9 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(restartBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHighScore();
+                sound.playClicked();
+                startGame();
+                pauseDialog.dismiss();
             }
         });
 
