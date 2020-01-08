@@ -148,7 +148,7 @@ public class GameActivity extends AppCompatActivity {
         highScoreDialog = new Dialog(this);
 
         /**
-         * Moving Background on the Main Activity in loop
+         * Moving Background on the Game Activity in loop
          */
         final ImageView backgroundOne = findViewById(R.id.game_bg_one);
         final ImageView backgroundTwo = findViewById(R.id.game_bg_two);
@@ -237,6 +237,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * NEXT LEVEL ALERT DIALOG
+     */
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
@@ -270,6 +273,9 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * NEXT LEVEL FAILED ALERT DIALOG
+     */
     public void showFail() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg =  epicDialog.findViewById(R.id.closePopupPositiveImg);
@@ -306,6 +312,9 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * COMPLETED ALL THE CHALLENGES ALERT DIALOG
+     */
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
@@ -340,6 +349,9 @@ public class GameActivity extends AppCompatActivity {
         epicDialog.show();
     }
 
+    /**
+     * ON PAUSE ALERT DIALOG
+     */
     public void showPause(){
         pauseDialog.setContentView(R.layout.pause_pop);
         resumeBtn = pauseDialog.findViewById(R.id.resumeBtn);
@@ -378,12 +390,18 @@ public class GameActivity extends AppCompatActivity {
         pauseDialog.show();
     }
 
+    /**
+     * ENTER NAME ALERT DIALOG
+     */
     public void showEnterName(){
         nameDialog.setContentView(R.layout.enter_name_pop);
         etName = nameDialog.findViewById(R.id.etName);
         submitBtn = nameDialog.findViewById(R.id.submitBtn);
     }
 
+    /**
+     * SHOW SCORE ALERT DIALOG
+     */
     public void showHighScore(){
         highScoreDialog.setContentView(R.layout.high_score_pop);
         tvName = highScoreDialog.findViewById(R.id.tvName);

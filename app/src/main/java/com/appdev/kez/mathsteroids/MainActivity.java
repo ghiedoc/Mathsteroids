@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivAbout, ivSound;
     HomeWatcher mHomeWatcher;
     int musicCounter = 0;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         ivAbout = findViewById(R.id.ivAbout);
         ivSound = findViewById(R.id.ivSound);
 
+        /**
+         * play button
+         */
         PushDownAnim.setPushDownAnimTo(playBtn)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -63,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        /**
+         * exit button
+         */
         PushDownAnim.setPushDownAnimTo(exitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,11 +115,13 @@ public class MainActivity extends AppCompatActivity {
         });
         animator.start();
 
-        //Background Music
+        /**
+         * Background Music Service
+         * BIND Music Service first
+         */
         SharedPreferences loadToggleState = this.getSharedPreferences("MyMusic", Context.MODE_PRIVATE);
         musicCounter = loadToggleState.getInt("music", 0); //0 is the default value
 
-        //Make sure in onCrate not to have duplicate `doBindService();` you need to call it only once like below!
         if (musicCounter == 0) {
             doBindService();
             Intent music = new Intent();
@@ -121,15 +129,10 @@ public class MainActivity extends AppCompatActivity {
             startService(music);
         }
 
-        /**
-         * Background Music Service
-         * BIND Music Service first
-         */
 
         /**
          * Start HomeWatcher
          */
-        //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);
         mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
             @Override
@@ -148,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         });
         mHomeWatcher.startWatch();
 
+        /**
+         * control sound by turning it off and on
+         */
         PushDownAnim.setPushDownAnimTo(ivSound).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
