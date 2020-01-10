@@ -25,6 +25,14 @@ public class showNameScore extends AppCompatActivity {
 
         prefs = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE);
 
+        top1 = prefs.getString("top1", null);
+        score1 = prefs.getInt("score1", 0);
+
+        top2 = prefs.getString("top2", null);
+        score2 = prefs.getInt("score2", 0);
+        top3 = prefs.getString("top3", null);
+        score3 = prefs.getInt("score3", 0);
+
         updatePrefs(st, sc);
 
         top1 = prefs.getString("top1", null);
