@@ -25,9 +25,8 @@ import android.widget.Toast;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class MainActivity extends AppCompatActivity {
-
     private SoundPlayer sound;
-
+    Button button;
     Button playBtn, exitBtn;
     ImageView ivAbout, ivSound;
     HomeWatcher mHomeWatcher;
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         /**
          * Fullscreen
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         exitBtn = findViewById(R.id.exitBtn);
         ivAbout = findViewById(R.id.ivAbout);
         ivSound = findViewById(R.id.ivSound);
+
 
         /**
          * play button

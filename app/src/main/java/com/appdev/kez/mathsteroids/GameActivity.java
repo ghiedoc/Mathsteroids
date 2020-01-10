@@ -3,6 +3,7 @@ package com.appdev.kez.mathsteroids;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +25,10 @@ public class GameActivity extends AppCompatActivity {
 
     Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog;
     ImageView closePopupPositiveImg;
-    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore, tvName;
+    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore, tvName, etSCore;
     EditText etName;
     ImageView iv1, iv2, iv3, iv4, ivPause;
-    Button  btnAccept, resumeBtn, restartBtn, exitBtn, submitBtn;
+    Button btnAccept, resumeBtn, restartBtn, exitBtn, submitBtn;
     Question question;
     Game g;
     Animation animation;
@@ -80,13 +81,12 @@ public class GameActivity extends AppCompatActivity {
         iv3.setEnabled(false);
         iv4.setEnabled(false);
 
+        etSCore = (TextView) findViewById(R.id.etScore);
+
 
         tvQuestion.setText("");
         tvScore.setText("0");
         startGame();
-
-//        final MediaPlayer hit = new MediaPlayer.create(this, )
-
 
         View.OnClickListener answerButtonClickListener1 = new View.OnClickListener() {
             @Override
@@ -96,6 +96,7 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+
             }
         };
 
@@ -148,7 +149,7 @@ public class GameActivity extends AppCompatActivity {
         highScoreDialog = new Dialog(this);
 
         /**
-         * Moving Background on the Game Activity in loop
+         * Moving Background on the Main Activity in loop
          */
         final ImageView backgroundOne = findViewById(R.id.game_bg_one);
         final ImageView backgroundTwo = findViewById(R.id.game_bg_two);
@@ -177,16 +178,17 @@ public class GameActivity extends AppCompatActivity {
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() == 10) {
                 g.changeDifficulty();
                 if (!g.difficulty.equals("End")) {
-                    showNextLevel();
+                    showFail();
                 }
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() < 10) {
-                showFail();
+                showEnterName();
                 iv1.setClickable(false);
                 iv2.setClickable(false);
                 iv3.setClickable(false);
                 iv4.setClickable(false);
             }
         } else {
+
             showEnd();
             iv1.setClickable(false);
             iv2.setClickable(false);
@@ -195,7 +197,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void startGame(){
+    private void startGame() {
         iv2.setAnimation(animation1);
         iv1.setAnimation(animation);
         iv3.setAnimation(animation);
@@ -217,7 +219,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void nextTurn() {
-        if(!g.difficulty.equals("End")){
+        if (!g.difficulty.equals("End")) {
             g.makeNewQuestion();
             int[] answer = g.getCurrentQuestion().getAnswerArray();
 
@@ -230,16 +232,14 @@ public class GameActivity extends AppCompatActivity {
             iv2.setEnabled(true);
             iv3.setEnabled(true);
             iv4.setEnabled(true);
+
             tvQuestion.setText(g.getCurrentQuestion().getQuestionPhrase());
             tvMessage.setText(g.getNumberCorrect() + "/" + (g.getTotalQuestions() - 1));
-        }else{
+        } else {
             showEnd();
         }
     }
 
-    /**
-     * NEXT LEVEL ALERT DIALOG
-     */
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
@@ -273,12 +273,9 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * NEXT LEVEL FAILED ALERT DIALOG
-     */
     public void showFail() {
         epicDialog.setContentView(R.layout.next_level_pop);
-        closePopupPositiveImg =  epicDialog.findViewById(R.id.closePopupPositiveImg);
+        closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
@@ -295,6 +292,7 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startGame();
                 epicDialog.dismiss();
+
             }
         });
 
@@ -312,9 +310,6 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * COMPLETED ALL THE CHALLENGES ALERT DIALOG
-     */
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
@@ -327,7 +322,6 @@ public class GameActivity extends AppCompatActivity {
         btnAccept.setText("Next");
         messageTv.setText("You completed all the challenges!");
         popUpScore.setText(Integer.toString(g.getScore()));
-
         sound.playWinSound();
 
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
@@ -340,8 +334,9 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startGame();
                 epicDialog.dismiss();
-                showEnterName();
+
             }
         });
 
@@ -349,10 +344,7 @@ public class GameActivity extends AppCompatActivity {
         epicDialog.show();
     }
 
-    /**
-     * ON PAUSE ALERT DIALOG
-     */
-    public void showPause(){
+    public void showPause() {
         pauseDialog.setContentView(R.layout.pause_pop);
         resumeBtn = pauseDialog.findViewById(R.id.resumeBtn);
         restartBtn = pauseDialog.findViewById(R.id.restartBtn);
@@ -390,21 +382,36 @@ public class GameActivity extends AppCompatActivity {
         pauseDialog.show();
     }
 
-    /**
-     * ENTER NAME ALERT DIALOG
-     */
-    public void showEnterName(){
+
+    public void showEnterName() {
         nameDialog.setContentView(R.layout.enter_name_pop);
+        etSCore = nameDialog.findViewById(R.id.etScore);
+        tvScore = nameDialog.findViewById(R.id.tvScore);
         etName = nameDialog.findViewById(R.id.etName);
         submitBtn = nameDialog.findViewById(R.id.submitBtn);
-    }
+        nameDialog.show();
 
-    /**
-     * SHOW SCORE ALERT DIALOG
-     */
-    public void showHighScore(){
-        highScoreDialog.setContentView(R.layout.high_score_pop);
-        tvName = highScoreDialog.findViewById(R.id.tvName);
-        tvScore = highScoreDialog.findViewById(R.id.tvScore);
+        tvScore.setText(Integer.toString(g.getScore()));
+
+
+        PushDownAnim.setPushDownAnimTo(submitBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                SharedPreferences sharedPreferences = getSharedPreferences("PREFS", 0);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putInt("LASTSCORE", score);
+//                editor.apply();
+                Intent intent = new Intent(getApplicationContext(), showNameScore.class);
+                String gname = etName.getText().toString().trim();
+                intent.putExtra("value", gname);
+                intent.putExtra("score",g.getScore());
+                startActivity(intent);
+                finish();
+                nameDialog.dismiss();
+            }
+        });
+
+
     }
 }
+
