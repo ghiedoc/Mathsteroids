@@ -1,13 +1,18 @@
 package com.appdev.kez.mathsteroids;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class showNameScore extends AppCompatActivity {
     TextView tvShow;
+    Button btnPlayAgain, btnMainMenu;
     public static final String MY_PREFS_FILENAME = "com.appdev.kez.mathsteroids.Names";
     String top1, top2, top3, st;
     int score1, score2, score3, sc;
@@ -31,6 +36,8 @@ public class showNameScore extends AppCompatActivity {
         score3 = prefs.getInt("score3", 0);
 
         tvShow = (TextView) findViewById(R.id.tvShow);
+        btnPlayAgain =(Button) findViewById(R.id.btnPlayAgain);
+        btnMainMenu = (Button) findViewById(R.id.btnMainMenu);
 
         try {
             st = getIntent().getExtras().getString("value");
@@ -61,7 +68,25 @@ public class showNameScore extends AppCompatActivity {
                     "TOP 3: null "+ score3 + "\n");
 
         }
-        return;
+
+
+        btnPlayAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(showNameScore.this, "Play", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.GameActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnMainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(showNameScore.this, "Main Menu", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
