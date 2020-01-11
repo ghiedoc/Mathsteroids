@@ -181,14 +181,13 @@ public class GameActivity extends AppCompatActivity {
                     showNextLevel();
                 }
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() < 10) {
-                showEnterName();
+                showFail();
                 iv1.setClickable(false);
                 iv2.setClickable(false);
                 iv3.setClickable(false);
                 iv4.setClickable(false);
             }
         } else {
-
             showEnd();
             iv1.setClickable(false);
             iv2.setClickable(false);
@@ -281,7 +280,7 @@ public class GameActivity extends AppCompatActivity {
         messageTv = epicDialog.findViewById(R.id.messageTv);
         titleTv = epicDialog.findViewById(R.id.titleTv);
         titleTv.setText("Failed!");
-        btnAccept.setText("Retry");
+        btnAccept.setText("Next");
         messageTv.setText("You've failed to accomplish the challenge!");
         popUpScore.setText(Integer.toString(g.getScore()));
 
@@ -290,7 +289,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGame();
+                showEnterName();
                 epicDialog.dismiss();
 
             }
@@ -334,7 +333,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGame();
+                showEnterName();
                 epicDialog.dismiss();
 
             }
@@ -397,10 +396,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(submitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                SharedPreferences sharedPreferences = getSharedPreferences("PREFS", 0);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putInt("LASTSCORE", score);
-//                editor.apply();
+
                 Intent intent = new Intent(getApplicationContext(), showNameScore.class);
                 String gname = etName.getText().toString().trim();
                 intent.putExtra("value", gname);

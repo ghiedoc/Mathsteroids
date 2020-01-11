@@ -61,6 +61,7 @@ public class showNameScore extends AppCompatActivity {
                     "TOP 3: null "+ score3 + "\n");
 
         }
+        return;
     }
 
 
@@ -111,6 +112,7 @@ public class showNameScore extends AppCompatActivity {
             editor.putInt("score3", score);
             editor.commit();
         }
+        arrange();
     }
 
     public void arrange() {
