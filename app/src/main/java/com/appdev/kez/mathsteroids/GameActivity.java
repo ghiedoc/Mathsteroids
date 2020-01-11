@@ -178,7 +178,7 @@ public class GameActivity extends AppCompatActivity {
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() == 10) {
                 g.changeDifficulty();
                 if (!g.difficulty.equals("End")) {
-                    showFail();
+                    showNextLevel();
                 }
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() < 10) {
                 showEnterName();
@@ -404,7 +404,7 @@ public class GameActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), showNameScore.class);
                 String gname = etName.getText().toString().trim();
                 intent.putExtra("value", gname);
-                intent.putExtra("score",g.getScore());
+                intent.putExtra("score", g.getScore());
                 startActivity(intent);
                 finish();
                 nameDialog.dismiss();

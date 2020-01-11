@@ -26,8 +26,7 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class MainActivity extends AppCompatActivity {
     private SoundPlayer sound;
-    Button button;
-    Button playBtn, exitBtn;
+    Button playBtn, exitBtn,btnHighScore;
     ImageView ivAbout, ivSound;
     HomeWatcher mHomeWatcher;
     int musicCounter = 0;
@@ -46,12 +45,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sound = new SoundPlayer(this);
-
+        btnHighScore = findViewById(R.id.btnHighScore);
         playBtn = findViewById(R.id.playBtn);
         exitBtn = findViewById(R.id.exitBtn);
         ivAbout = findViewById(R.id.ivAbout);
         ivSound = findViewById(R.id.ivSound);
 
+        /**
+         * high score button
+         * */
+        PushDownAnim.setPushDownAnimTo(btnHighScore)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sound.playClicked();
+                        Toast.makeText(MainActivity.this, "Record", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), showNameScore.class);
+                        startActivity(intent);
+                    }
+                });
 
         /**
          * play button
