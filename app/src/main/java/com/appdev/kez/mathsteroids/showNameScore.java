@@ -30,6 +30,7 @@ public class showNameScore extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
 //        /**
 //         * Fullscreen
 //         */
@@ -42,15 +43,15 @@ public class showNameScore extends AppCompatActivity {
         prefs = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE);
 
 
-        top1 = prefs.getString("top1", null);
+        top1 = prefs.getString("top1", "");
         score1 = prefs.getInt("score1", 0);
-        top2 = prefs.getString("top2", null);
+        top2 = prefs.getString("top2", "");
         score2 = prefs.getInt("score2", 0);
-        top3 = prefs.getString("top3", null);
+        top3 = prefs.getString("top3", "");
         score3 = prefs.getInt("score3", 0);
 
         tvShow = (TextView) findViewById(R.id.tvShow);
-        btnPlayAgain =(Button) findViewById(R.id.btnPlayAgain);
+        btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
         btnMainMenu = (Button) findViewById(R.id.btnMainMenu);
 
         try {
@@ -61,12 +62,12 @@ public class showNameScore extends AppCompatActivity {
             arrange();
         } catch (Exception e) {
         }
-
-        top1 = prefs.getString("top1", null);
+        arrange();
+        top1 = prefs.getString("top1", "");
         score1 = prefs.getInt("score1", 0);
-        top2 = prefs.getString("top2", null);
+        top2 = prefs.getString("top2", "");
         score2 = prefs.getInt("score2", 0);
-        top3 = prefs.getString("top3", null);
+        top3 = prefs.getString("top3", "");
         score3 = prefs.getInt("score3", 0);
 
         /**
@@ -79,7 +80,7 @@ public class showNameScore extends AppCompatActivity {
         } catch (Exception e) {
             tvShow.setText("TOP 1 : null " + score1 + "\n" +
                     "TOP 2: null " + score2 + "\n" +
-                    "TOP 3: null "+ score3 + "\n");
+                    "TOP 3: null " + score3 + "\n");
 
         }
 
@@ -89,6 +90,7 @@ public class showNameScore extends AppCompatActivity {
                 Toast.makeText(showNameScore.this, "Play", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.GameActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -98,6 +100,7 @@ public class showNameScore extends AppCompatActivity {
                 Toast.makeText(showNameScore.this, "Main Menu", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
@@ -104,7 +105,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
-
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
 
@@ -116,6 +119,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
         View.OnClickListener answerButtonClickListener3 = new View.OnClickListener() {
@@ -126,6 +132,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
         View.OnClickListener answerButtonClickListener4 = new View.OnClickListener() {
@@ -136,6 +145,10 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
+
             }
         };
 
@@ -315,6 +328,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
@@ -328,6 +342,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nextTurn();
                 epicDialog.dismiss();
             }
         });
@@ -348,6 +363,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showFail() {
         epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
@@ -385,6 +401,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
@@ -419,6 +436,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showPause() {
         pauseDialog.setContentView(R.layout.pause_pop);
+        pauseDialog.setCancelable(false);
         resumeBtn = pauseDialog.findViewById(R.id.resumeBtn);
         restartBtn = pauseDialog.findViewById(R.id.restartBtn);
         exitBtn = pauseDialog.findViewById(R.id.exitBtn);
@@ -439,6 +457,7 @@ public class GameActivity extends AppCompatActivity {
                 sound.playClicked();
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -458,6 +477,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showEnterName() {
         nameDialog.setContentView(R.layout.enter_name_pop);
+        nameDialog.setCancelable(false);
         etSCore = nameDialog.findViewById(R.id.etScore);
         tvScore = nameDialog.findViewById(R.id.tvScore);
         etName = nameDialog.findViewById(R.id.etName);
@@ -470,14 +490,21 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(submitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), showNameScore.class);
-                String gname = etName.getText().toString().trim();
-                intent.putExtra("value", gname);
-                intent.putExtra("score", g.getScore());
-                startActivity(intent);
-                finish();
-                nameDialog.dismiss();
+                if (!etName.getText().toString().trim().isEmpty()) {
+                    if (!(etName.getText().toString().trim().length() > 5)) {
+                        Intent intent = new Intent(getApplicationContext(), showNameScore.class);
+                        String gname = etName.getText().toString().trim();
+                        intent.putExtra("value", gname);
+                        intent.putExtra("score", g.getScore());
+                        startActivity(intent);
+                        finish();
+                        nameDialog.dismiss();
+                    } else {
+                        Toast.makeText(GameActivity.this, "Too Long(Help)", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GameActivity.this, "Null Input", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -556,5 +583,9 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        showPause();
+    }
 }
 

@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 public class SplashScreen extends AppCompatActivity {
 
-    ImageView logo;
+    ImageView logo,aste;
     private static int splashTimeOut = 3000;
 
     @Override
@@ -32,7 +32,9 @@ public class SplashScreen extends AppCompatActivity {
         logo = findViewById(R.id.logo);
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.splashanimation);
         logo.setAnimation(animation);
-
+        aste = findViewById(R.id.imageView6);
+        Animation animations = AnimationUtils.loadAnimation(this, R.anim.top);
+        aste.setAnimation(animations);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

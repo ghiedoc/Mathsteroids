@@ -102,16 +102,16 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
+        android:layout_width="400dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="92dp"
         app:layout_constraintBottom_toTopOf="@+id/playBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/logotrans" />
+        app:layout_constraintVertical_bias="0.617"
+        app:srcCompat="@drawable/mathsteroidbaby" />
 
 
 </android.support.constraint.ConstraintLayout>
