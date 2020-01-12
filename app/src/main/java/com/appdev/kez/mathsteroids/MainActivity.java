@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,15 +28,15 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class MainActivity extends AppCompatActivity {
     private SoundPlayer sound;
-    Button playBtn, exitBtn,btnHighScore;
-    ImageView ivAbout, ivSound;
+    Button playBtn, exitBtn;
+    ImageView ivAbout, ivSound, ivStar;
     HomeWatcher mHomeWatcher;
     int musicCounter = 0;
+    Animation frombutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         /**
          * Fullscreen
@@ -45,16 +47,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sound = new SoundPlayer(this);
-        btnHighScore = findViewById(R.id.btnHighScore);
         playBtn = findViewById(R.id.playBtn);
         exitBtn = findViewById(R.id.exitBtn);
         ivAbout = findViewById(R.id.ivAbout);
         ivSound = findViewById(R.id.ivSound);
+        ivStar = findViewById(R.id.ivStar);
 
         /**
-         * high score button
-         * */
-        PushDownAnim.setPushDownAnimTo(btnHighScore)
+         * transition button
+         */
+        frombutton = AnimationUtils.loadAnimation(this, R.anim.frombutton);
+        playBtn.setAnimation(frombutton);
+        exitBtn.setAnimation(frombutton);
+
+        /**
+         * score board activity
+         */
+        PushDownAnim.setPushDownAnimTo(ivStar)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -92,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(0);
+//                                finish();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -261,12 +273,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         //UNBIND music service
         doUnbindService();
         Intent music = new Intent();
         music.setClass(this, BackgroundMusicService.class);
         stopService(music);
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MainActivity.this, com.appdev.kez.mathsteroids.GameActivity.class);
+        startActivity(intent);
     }
 }

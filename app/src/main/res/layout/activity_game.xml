@@ -232,5 +232,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/pause_game" />
 
+    <ImageView
+        android:id="@+id/ivSound"
+        android:layout_width="30dp"
+        android:layout_height="                     30dp         "
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/sound_on_white" />
+
 
 </android.support.constraint.ConstraintLayout>

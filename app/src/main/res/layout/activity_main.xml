@@ -38,12 +38,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/play_button"
+        android:fontFamily="@font/righteous_regular"
         android:text="play"
         android:textColor="#ffffff"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/exitBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/righteous_regular"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -89,13 +89,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/btnHighScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Records"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="269dp" />
+    <ImageView
+        android:id="@+id/ivStar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/ivAbout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/star" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="92dp"
+        app:layout_constraintBottom_toTopOf="@+id/playBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/logotrans" />
 
 
 </android.support.constraint.ConstraintLayout>
