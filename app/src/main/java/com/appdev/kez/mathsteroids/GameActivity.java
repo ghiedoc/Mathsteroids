@@ -2,10 +2,15 @@ package com.appdev.kez.mathsteroids;
 
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,13 +23,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class GameActivity extends AppCompatActivity {
 
     Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog;
-    ImageView closePopupPositiveImg;
+    ImageView closePopupPositiveImg, ivSound;
     TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore, tvName, etSCore;
     EditText etName;
     ImageView iv1, iv2, iv3, iv4, ivPause;
@@ -34,6 +40,8 @@ public class GameActivity extends AppCompatActivity {
     Animation animation;
     Animation animation1;
     int score;
+    HomeWatcher mHomeWatcher;
+    int musicCounter = 0;
 
     //Initialize Class
     private SoundPlayer sound;
@@ -58,6 +66,7 @@ public class GameActivity extends AppCompatActivity {
         highScoreDialog = new Dialog(this);
 
         ivPause = findViewById(R.id.ivPause);
+        ivSound = findViewById(R.id.ivSound);
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.updown);
         animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.updown1);
@@ -96,7 +105,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
-
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
 
@@ -108,6 +119,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
         View.OnClickListener answerButtonClickListener3 = new View.OnClickListener() {
@@ -118,6 +132,9 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
             }
         };
         View.OnClickListener answerButtonClickListener4 = new View.OnClickListener() {
@@ -128,6 +145,10 @@ public class GameActivity extends AppCompatActivity {
                 tvScore.setText(Integer.toString(g.getScore()));
                 checkQuestionNum();
                 sound.playHitSound();
+                if (g.difficulty.equals("End")) {
+                    showEnd();
+                }
+
             }
         };
 
@@ -169,6 +190,72 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         animator.start();
+
+        /**
+         * Background Music Service
+         * BIND Music Service first
+         */
+        SharedPreferences loadToggleState = this.getSharedPreferences("MyMusic", Context.MODE_PRIVATE);
+        musicCounter = loadToggleState.getInt("music", 0); //0 is the default value
+
+        if (musicCounter == 0) {
+            doBindService();
+            Intent music = new Intent();
+            music.setClass(this, BackgroundMusicService.class);
+            startService(music);
+        }
+
+
+        /**
+         * Start HomeWatcher
+         */
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
+
+        /**
+         * control sound by turning it off and on
+         */
+        PushDownAnim.setPushDownAnimTo(ivSound).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (musicCounter > 0) {
+                    doBindService();
+                    Intent music = new Intent();
+                    music.setClass(GameActivity.this, BackgroundMusicService.class);
+                    startService(music);
+                    musicCounter = 0;
+                    if (mServ != null) {
+                        mServ.startMusic();
+                        ivSound.setImageResource(R.drawable.sound_on_white);
+                    }
+                } else {
+                    musicCounter = 1;
+                    if (mServ != null) {
+                        mServ.stopMusic();
+                        ivSound.setImageResource(R.drawable.sound_off);
+                    }
+                }
+                SharedPreferences saveMusic = getSharedPreferences("MyMusic", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editorMusic = saveMusic.edit();
+                editorMusic.putInt("music", musicCounter);
+                editorMusic.apply();
+            }
+        });
     }
 
     private void checkQuestionNum() {
@@ -178,17 +265,16 @@ public class GameActivity extends AppCompatActivity {
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() == 10) {
                 g.changeDifficulty();
                 if (!g.difficulty.equals("End")) {
-                    showFail();
+                    showNextLevel();
                 }
             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() < 10) {
-                showEnterName();
+                showFail();
                 iv1.setClickable(false);
                 iv2.setClickable(false);
                 iv3.setClickable(false);
                 iv4.setClickable(false);
             }
         } else {
-
             showEnd();
             iv1.setClickable(false);
             iv2.setClickable(false);
@@ -242,6 +328,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
@@ -255,6 +342,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                nextTurn();
                 epicDialog.dismiss();
             }
         });
@@ -274,14 +362,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void showFail() {
-        epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setContentView(R.layout.failed_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
         titleTv = epicDialog.findViewById(R.id.titleTv);
         titleTv.setText("Failed!");
-        btnAccept.setText("Retry");
+        btnAccept.setText("Next");
         messageTv.setText("You've failed to accomplish the challenge!");
         popUpScore.setText(Integer.toString(g.getScore()));
 
@@ -290,7 +379,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGame();
+                showEnterName();
                 epicDialog.dismiss();
 
             }
@@ -312,6 +401,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showEnd() {
         epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
@@ -334,7 +424,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGame();
+                showEnterName();
                 epicDialog.dismiss();
 
             }
@@ -346,6 +436,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void showPause() {
         pauseDialog.setContentView(R.layout.pause_pop);
+        pauseDialog.setCancelable(false);
         resumeBtn = pauseDialog.findViewById(R.id.resumeBtn);
         restartBtn = pauseDialog.findViewById(R.id.restartBtn);
         exitBtn = pauseDialog.findViewById(R.id.exitBtn);
@@ -366,6 +457,7 @@ public class GameActivity extends AppCompatActivity {
                 sound.playClicked();
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -384,7 +476,8 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void showEnterName() {
-        nameDialog.setContentView(R.layout.enter_name_pop);
+        nameDialog.setContentView(R.layout.high_score_pop);
+        nameDialog.setCancelable(false);
         etSCore = nameDialog.findViewById(R.id.etScore);
         tvScore = nameDialog.findViewById(R.id.tvScore);
         etName = nameDialog.findViewById(R.id.etName);
@@ -397,21 +490,102 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(submitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                SharedPreferences sharedPreferences = getSharedPreferences("PREFS", 0);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putInt("LASTSCORE", score);
-//                editor.apply();
-                Intent intent = new Intent(getApplicationContext(), showNameScore.class);
-                String gname = etName.getText().toString().trim();
-                intent.putExtra("value", gname);
-                intent.putExtra("score",g.getScore());
-                startActivity(intent);
-                finish();
-                nameDialog.dismiss();
+                if (!etName.getText().toString().trim().isEmpty()) {
+                    if (!(etName.getText().toString().trim().length() > 5)) {
+                        Intent intent = new Intent(getApplicationContext(), showNameScore.class);
+                        String gname = etName.getText().toString().trim();
+                        intent.putExtra("value", gname);
+                        intent.putExtra("score", g.getScore());
+                        startActivity(intent);
+                        finish();
+                        nameDialog.dismiss();
+                    } else {
+                        Toast.makeText(GameActivity.this, "Too Long(Help)", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(GameActivity.this, "Null Input", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
 
+    /**
+     * Bind or Unbind the Background Music
+     */
+    private boolean mIsBound = false;
+    private BackgroundMusicService mServ;
 
+    /**
+     * Background Music
+     */
+    private ServiceConnection Scon = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((BackgroundMusicService.ServiceBinder) binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    void doBindService() {
+        bindService(new Intent(this, BackgroundMusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService() {
+        if (mIsBound) {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Detect idle screen
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isScreenOn();
+        }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //UNBIND music service
+        doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, BackgroundMusicService.class);
+        stopService(music);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        showPause();
     }
 }
 

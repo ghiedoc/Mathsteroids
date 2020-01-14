@@ -29,7 +29,7 @@
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="36dp"
                 android:fontFamily="@font/righteous_regular"
                 android:gravity="center_horizontal"
                 android:text="YOUR SCORE"
@@ -41,18 +41,21 @@
 
             <TextView
                 android:id="@+id/tvScore"
-                android:layout_width="match_parent"
-                android:layout_height="111dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/righteous_regular"
                 android:gravity="center_horizontal"
                 android:text="0"
                 android:textColor="@color/white"
                 android:textSize="84sp"
-                app:layout_constraintTop_toBottomOf="@+id/etScore"
-                tools:layout_editor_absoluteX="16dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etScore" />
 
 
             <EditText
@@ -61,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="40dp"
                 android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
                 android:ems="10"
                 android:fontFamily="@font/righteous_regular"
                 android:gravity="center_horizontal"
@@ -69,7 +73,7 @@
                 android:textColor="#ffffff"
                 android:textSize="34sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.242"
+                app:layout_constraintHorizontal_bias="0.486"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvScore"
                 tools:ignore="MissingConstraints" />
@@ -77,11 +81,10 @@
             <Button
                 android:id="@+id/submitBtn"
                 android:layout_width="200dp"
-                android:layout_height="63dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="106dp"
                 android:layout_marginStart="106dp"
-                android:layout_marginTop="28dp"
                 android:background="@drawable/play_button"
                 android:fontFamily="@font/righteous_regular"
                 android:text="Submit"
@@ -89,8 +92,7 @@
                 android:textSize="34sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etName" />
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </android.support.constraint.ConstraintLayout>

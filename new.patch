@@ -1,0 +1,269 @@
+Index: app/src/main/java/com/appdev/kez/mathsteroids/GameActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/appdev/kez/mathsteroids/GameActivity.java	(revision 8635dd80624ccec6d9c76700dbe94ee101cf9ce0)
++++ app/src/main/java/com/appdev/kez/mathsteroids/GameActivity.java	(date 1578686769927)
+@@ -178,7 +178,7 @@
+             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() == 10) {
+                 g.changeDifficulty();
+                 if (!g.difficulty.equals("End")) {
+-                    showFail();
++                    showNextLevel();
+                 }
+             } else if (g.getTotalQuestions() == 10 && g.getNumberCorrect() < 10) {
+                 showEnterName();
+Index: app/src/main/java/com/appdev/kez/mathsteroids/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/appdev/kez/mathsteroids/MainActivity.java	(revision 8635dd80624ccec6d9c76700dbe94ee101cf9ce0)
++++ app/src/main/java/com/appdev/kez/mathsteroids/MainActivity.java	(date 1578690352888)
+@@ -26,8 +26,7 @@
+ 
+ public class MainActivity extends AppCompatActivity {
+     private SoundPlayer sound;
+-    Button button;
+-    Button playBtn, exitBtn;
++    Button playBtn, exitBtn,btnHighScore;
+     ImageView ivAbout, ivSound;
+     HomeWatcher mHomeWatcher;
+     int musicCounter = 0;
+@@ -46,12 +45,25 @@
+         setContentView(R.layout.activity_main);
+ 
+         sound = new SoundPlayer(this);
+-
++        btnHighScore = findViewById(R.id.btnHighScore);
+         playBtn = findViewById(R.id.playBtn);
+         exitBtn = findViewById(R.id.exitBtn);
+         ivAbout = findViewById(R.id.ivAbout);
+         ivSound = findViewById(R.id.ivSound);
+ 
++        /**
++         * high score button
++         * */
++        PushDownAnim.setPushDownAnimTo(btnHighScore)
++                .setOnClickListener(new View.OnClickListener() {
++                    @Override
++                    public void onClick(View v) {
++                        sound.playClicked();
++                        Toast.makeText(MainActivity.this, "Record", Toast.LENGTH_SHORT).show();
++                        Intent intent = new Intent(getApplicationContext(), showNameScore.class);
++                        startActivity(intent);
++                    }
++                });
+ 
+         /**
+          * play button
+Index: app/src/main/java/com/appdev/kez/mathsteroids/showNameScore.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/appdev/kez/mathsteroids/showNameScore.java	(revision 8635dd80624ccec6d9c76700dbe94ee101cf9ce0)
++++ app/src/main/java/com/appdev/kez/mathsteroids/showNameScore.java	(date 1578690904109)
+@@ -9,82 +9,63 @@
+ public class showNameScore extends AppCompatActivity {
+     TextView tvShow;
+     public static final String MY_PREFS_FILENAME = "com.appdev.kez.mathsteroids.Names";
+-    String top1, top2, top3;
+-    int score1, score2, score3;
++    String top1, top2, top3, st;
++    int score1, score2, score3, sc;
+     SharedPreferences prefs;
++    SharedPreferences.Editor editor;
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_show_name_score);
+ 
+ 
+-        tvShow = (TextView) findViewById(R.id.tvShow);
+-
+-        String st = getIntent().getExtras().getString("value");
+-        int sc = getIntent().getExtras().getInt("score");
+-
+         prefs = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE);
+ 
++
+         top1 = prefs.getString("top1", null);
+         score1 = prefs.getInt("score1", 0);
+-
+         top2 = prefs.getString("top2", null);
+         score2 = prefs.getInt("score2", 0);
+         top3 = prefs.getString("top3", null);
+         score3 = prefs.getInt("score3", 0);
+ 
+-        updatePrefs(st, sc);
++        tvShow = (TextView) findViewById(R.id.tvShow);
++
++        try {
++            st = getIntent().getExtras().getString("value");
++            sc = getIntent().getExtras().getInt("score");
++            arrange();
++            updatePrefs(st, sc);
++            arrange();
++        } catch (Exception e) {
++        }
+ 
+         top1 = prefs.getString("top1", null);
+         score1 = prefs.getInt("score1", 0);
+-
+         top2 = prefs.getString("top2", null);
+         score2 = prefs.getInt("score2", 0);
+         top3 = prefs.getString("top3", null);
+         score3 = prefs.getInt("score3", 0);
+ 
+-
+-        /**
+-         * REPLACE IF THERE IS A HIGH SCORE
+-         */
+-
+-//        if (lastscore > top3) {
+-//            top3 = lastscore;
+-//            SharedPreferences.Editor editor = sp.edit();
+-//            editor.putInt("TOP 3", top3);
+-//            editor.apply();
+-//        }
+-//        if (lastscore > top2) {
+-//            int temp = top2;
+-//            top2 = lastscore;
+-//            top3 = temp;
+-//            SharedPreferences.Editor editor = sp.edit();
+-//            editor.putInt("TOP 3", top3);
+-//            editor.putInt("TOP 2", top2);
+-//            editor.apply();
+-//        }
+-//        if (lastscore > top1) {
+-//            int temp = top1;
+-//            top2 = lastscore;
+-//            top3 = temp;
+-//            SharedPreferences.Editor editor = sp.edit();
+-//            editor.putInt("TOP 2", top2);
+-//            editor.putInt("TOP 1", top1);
+-//            editor.apply();
+-//        }
+         /**
+          * DISPLAY THE SCORES
+          */
+-        tvShow.setText("TOP 1 : " + top1.concat(Integer.toString(score1)) + "\n" +
+-                "TOP 2: " + top2 + score2 + "\n" +
+-                "TOP 3: " + top3 + score3 + "\n");
++        try {
++            tvShow.setText("TOP 1 : " + top1 + " " + score1 + "\n" +
++                    "TOP 2: " + top2 + " " + score2 + "\n" +
++                    "TOP 3: " + top3 + " " + score3 + "\n");
++        } catch (Exception e) {
++            tvShow.setText("TOP 1 : null " + score1 + "\n" +
++                    "TOP 2: null " + score2 + "\n" +
++                    "TOP 3: null "+ score3 + "\n");
+ 
+-
++        }
+     }
+ 
+ 
+     public void updatePrefs(String name, int score) {
+-        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE).edit();
++        editor = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE).edit();
+         if (top1 == null) {
+             editor.putString("top1", name);
+             editor.putInt("score1", score);
+@@ -107,20 +88,54 @@
+     public void newHighPrefs(String name, int score) {
+         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE).edit();
+         if (score1 < score) {
++            String tempName = prefs.getString("top1", null);
++            int tempScore = prefs.getInt("score1", 0);
+             editor.putString("top1", name);
+             editor.putInt("score1", score);
++            name = tempName;
++            score = tempScore;
+             editor.commit();
+-        } else if (score2 < score) {
++
++        }
++        if (score2 < score) {
++            String tempName = prefs.getString("top2", null);
++            int tempScore = prefs.getInt("score2", 0);
+             editor.putString("top2", name);
+             editor.putInt("score2", score);
++            name = tempName;
++            score = tempScore;
+             editor.commit();
+-        } else if (score3 < score) {
++        }
++        if (score3 < score) {
+             editor.putString("top3", name);
+             editor.putInt("score3", score);
+             editor.commit();
+-        } else {
++        }
++    }
++
++    public void arrange() {
++        editor = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE).edit();
++
++        if (prefs.getInt("score1", 0) < prefs.getInt("score2", 0)) {
++            String tempName = prefs.getString("top1", null);
++            int tempScore = prefs.getInt("score1", 0);
++            editor.putString("top1", prefs.getString("top2", null));
++            editor.putInt("score1", prefs.getInt("score2", 0));
++            editor.putString("top2", tempName);
++            editor.putInt("score2", tempScore);
++            editor.commit();
++        }
+ 
++        if (prefs.getInt("score2", 0) < prefs.getInt("score3", 0)) {
++            String tempName = prefs.getString("top2", null);
++            int tempScore = prefs.getInt("score2", 0);
++            editor.putString("top2", prefs.getString("top3", null));
++            editor.putInt("score2", prefs.getInt("score3", 0));
++            editor.putString("top3", tempName);
++            editor.putInt("score3", tempScore);
++            editor.commit();
+         }
++
+ 
+     }
+ }
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(revision 8635dd80624ccec6d9c76700dbe94ee101cf9ce0)
++++ app/src/main/res/layout/activity_main.xml	(date 1578690352851)
+@@ -90,10 +90,10 @@
+         app:layout_constraintEnd_toEndOf="parent" />
+ 
+     <Button
+-        android:id="@+id/button"
++        android:id="@+id/btnHighScore"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:text="Button"
++        android:text="Records"
+         tools:layout_editor_absoluteX="148dp"
+         tools:layout_editor_absoluteY="269dp" />
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 8635dd80624ccec6d9c76700dbe94ee101cf9ce0)
++++ .idea/misc.xml	(date 1578691625062)
+@@ -25,7 +25,7 @@
+       </value>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
