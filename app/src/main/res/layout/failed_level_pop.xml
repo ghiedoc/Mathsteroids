@@ -47,7 +47,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/righteous_regular"
-                android:text="NEXT LEVEL"
+                android:text="YOU FAILED!"
                 android:textAlignment="center"
                 android:textColor="#FFF72E"
                 android:textSize="36sp"
@@ -63,7 +63,7 @@
                 android:layout_height="40dp"
                 android:layout_marginBottom="12dp"
                 android:fontFamily="@font/righteous_regular"
-                android:text="@string/popup_text_default"
+                android:text="You failed the challenge!"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
@@ -83,7 +83,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                app:lottie_fileName="trophy.json" />
+                app:lottie_fileName="failed.json" />
 
             <TextView
                 android:id="@+id/popUpScore"
@@ -113,7 +113,7 @@
                 android:layout_marginStart="8dp"
                 android:background="@drawable/play_button"
                 android:fontFamily="@font/righteous_regular"
-                android:text="NEXT"
+                android:text="RETRY"
                 android:textColor="#ffffff"
                 android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="parent"

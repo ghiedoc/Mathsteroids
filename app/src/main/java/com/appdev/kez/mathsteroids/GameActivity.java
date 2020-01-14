@@ -362,7 +362,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void showFail() {
-        epicDialog.setContentView(R.layout.next_level_pop);
+        epicDialog.setContentView(R.layout.failed_level_pop);
         epicDialog.setCancelable(false);
         closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
@@ -476,7 +476,7 @@ public class GameActivity extends AppCompatActivity {
 
 
     public void showEnterName() {
-        nameDialog.setContentView(R.layout.enter_name_pop);
+        nameDialog.setContentView(R.layout.high_score_pop);
         nameDialog.setCancelable(false);
         etSCore = nameDialog.findViewById(R.id.etScore);
         tvScore = nameDialog.findViewById(R.id.tvScore);
