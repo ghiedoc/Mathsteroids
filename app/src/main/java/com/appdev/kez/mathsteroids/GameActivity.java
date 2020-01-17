@@ -329,6 +329,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 nextTurn();
                 epicDialog.dismiss();
             }
@@ -337,6 +338,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 nextTurn();
                 epicDialog.dismiss();
             }
@@ -364,6 +366,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 showEnterName();
                 epicDialog.dismiss();
 
@@ -373,6 +376,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
                 startActivity(intent);
             }
@@ -402,6 +406,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 epicDialog.dismiss();
             }
         });
@@ -409,6 +414,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 showEnterName();
                 epicDialog.dismiss();
 
@@ -471,10 +477,10 @@ public class GameActivity extends AppCompatActivity {
 
         tvScore.setText(Integer.toString(g.getScore()));
 
-
         PushDownAnim.setPushDownAnimTo(submitBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 if (!etName.getText().toString().trim().isEmpty()) {
                     if (!(etName.getText().toString().trim().length() > 5)) {
                         Intent intent = new Intent(getApplicationContext(), showNameScore.class);
@@ -506,6 +512,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 settingDialog.dismiss();
             }
         });
@@ -523,6 +530,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(ivStar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.showNameScore.class);
                 intent.putExtra("parent", "gameDialogActivity");
                 startActivity(intent);
@@ -580,6 +588,7 @@ public class GameActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 aboutDialog.dismiss();
             }
         });
