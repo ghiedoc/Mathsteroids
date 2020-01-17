@@ -271,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, com.appdev.kez.mathsteroids.showNameScore.class);
+                intent.putExtra("parent", "mainActivity");
                 startActivity(intent);
                 settingDialog.dismiss();
             }
