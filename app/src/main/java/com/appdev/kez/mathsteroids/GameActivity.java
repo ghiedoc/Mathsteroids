@@ -29,11 +29,11 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class GameActivity extends AppCompatActivity {
 
-    Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog;
-    ImageView closePopupPositiveImg, ivSound;
-    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, tvMessage, titleTv, messageTv, popUpScore, tvName, etSCore;
+    Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog, settingDialog;
+    ImageView closePopupPositiveImg;
+    TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, titleTv, messageTv, popUpScore, tvName, etSCore;
     EditText etName;
-    ImageView iv1, iv2, iv3, iv4, ivPause;
+    ImageView iv1, iv2, iv3, iv4, ivPause, ivSound, ivAbout, ivStar, ivSetting;
     Button btnAccept, resumeBtn, restartBtn, exitBtn, submitBtn;
     Question question;
     Game g;
@@ -64,9 +64,25 @@ public class GameActivity extends AppCompatActivity {
         pauseDialog = new Dialog(this);
         nameDialog = new Dialog(this);
         highScoreDialog = new Dialog(this);
+        settingDialog = new Dialog(this);
 
         ivPause = findViewById(R.id.ivPause);
         ivSound = findViewById(R.id.ivSound);
+        ivStar = findViewById(R.id.ivStar);
+        ivAbout = findViewById(R.id.ivAbout);
+        ivSetting = findViewById(R.id.ivSetting);
+
+        /**
+         * Setting pop up
+         */
+        PushDownAnim.setPushDownAnimTo(ivSetting)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sound.playClicked();
+                        showSetting();
+                    }
+                });
 
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.updown);
         animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.updown1);
@@ -78,7 +94,6 @@ public class GameActivity extends AppCompatActivity {
         tv3 = findViewById(R.id.tv3);
         tv4 = findViewById(R.id.tv4);
 
-        tvMessage = findViewById(R.id.tvMessage);
 
         iv1 = findViewById(R.id.iv1);
         iv2 = findViewById(R.id.iv2);
@@ -90,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
         iv3.setEnabled(false);
         iv4.setEnabled(false);
 
-        etSCore = (TextView) findViewById(R.id.etScore);
+        etSCore = findViewById(R.id.etScore);
 
 
         tvQuestion.setText("");
@@ -168,6 +183,7 @@ public class GameActivity extends AppCompatActivity {
         pauseDialog = new Dialog(this);
         nameDialog = new Dialog(this);
         highScoreDialog = new Dialog(this);
+        settingDialog = new Dialog(this);
 
         /**
          * Moving Background on the Main Activity in loop
@@ -226,36 +242,6 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
-
-        /**
-         * control sound by turning it off and on
-         */
-        PushDownAnim.setPushDownAnimTo(ivSound).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (musicCounter > 0) {
-                    doBindService();
-                    Intent music = new Intent();
-                    music.setClass(GameActivity.this, BackgroundMusicService.class);
-                    startService(music);
-                    musicCounter = 0;
-                    if (mServ != null) {
-                        mServ.startMusic();
-                        ivSound.setImageResource(R.drawable.sound_on_white);
-                    }
-                } else {
-                    musicCounter = 1;
-                    if (mServ != null) {
-                        mServ.stopMusic();
-                        ivSound.setImageResource(R.drawable.sound_off);
-                    }
-                }
-                SharedPreferences saveMusic = getSharedPreferences("MyMusic", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editorMusic = saveMusic.edit();
-                editorMusic.putInt("music", musicCounter);
-                editorMusic.apply();
-            }
-        });
     }
 
     private void checkQuestionNum() {
@@ -320,7 +306,7 @@ public class GameActivity extends AppCompatActivity {
             iv4.setEnabled(true);
 
             tvQuestion.setText(g.getCurrentQuestion().getQuestionPhrase());
-            tvMessage.setText(g.getNumberCorrect() + "/" + (g.getTotalQuestions() - 1));
+
         } else {
             showEnd();
         }
@@ -357,8 +343,6 @@ public class GameActivity extends AppCompatActivity {
 
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
-
-
     }
 
     public void showFail() {
@@ -503,10 +487,73 @@ public class GameActivity extends AppCompatActivity {
                         Toast.makeText(GameActivity.this, "Too Long(Help)", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(GameActivity.this, "Null Input", Toast.LENGTH_SHORT).show();
-                }
+                    Toast.makeText(GameActivity.this, "Write your name!", Toast.LENGTH_SHORT).show();
+            }
             }
         });
+    }
+
+    public void showSetting() {
+        settingDialog.setContentView(R.layout.setting_pop);
+        settingDialog.setCancelable(false);
+        closePopupPositiveImg = settingDialog.findViewById(R.id.closePopupPositiveImg);
+        ivSound = settingDialog.findViewById(R.id.ivSound);
+        ivStar = settingDialog.findViewById(R.id.ivStar);
+        ivAbout = settingDialog.findViewById(R.id.ivAbout);
+
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingDialog.dismiss();
+            }
+        });
+
+        PushDownAnim.setPushDownAnimTo(ivStar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.showNameScore.class);
+                startActivity(intent);
+                settingDialog.dismiss();
+            }
+        });
+
+        PushDownAnim.setPushDownAnimTo(ivSound).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * control the sound by turning on and off
+                 */
+                PushDownAnim.setPushDownAnimTo(ivSound).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (musicCounter > 0) {
+                            doBindService();
+                            Intent music = new Intent();
+                            music.setClass(GameActivity.this, BackgroundMusicService.class);
+                            startService(music);
+                            musicCounter = 0;
+                            if (mServ != null) {
+                                mServ.startMusic();
+                                ivSound.setImageResource(R.drawable.sound_on_white);
+                            }
+                        } else {
+                            musicCounter = 1;
+                            if (mServ != null) {
+                                mServ.stopMusic();
+                                ivSound.setImageResource(R.drawable.sound_off);
+                            }
+                        }
+                        SharedPreferences saveMusic = getSharedPreferences("MyMusic", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editorMusic = saveMusic.edit();
+                        editorMusic.putInt("music", musicCounter);
+                        editorMusic.apply();
+                    }
+                });
+            }
+        });
+
+        settingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        settingDialog.show();
     }
 
     /**

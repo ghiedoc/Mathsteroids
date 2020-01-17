@@ -16,7 +16,7 @@ public class Question {
         Random randomNumberMaker = new Random();
 
         this.firstNumber = randomNum1(difficulty);
-        this.secondNumber = randomNum2();
+        this.secondNumber = randomNum2(difficulty);
         this.answer = this.firstNumber * this.secondNumber;
         this.questionPhrase = firstNumber + " X " + secondNumber;
 
@@ -82,14 +82,20 @@ public class Question {
         if (difficulty.equals("Easy")) {
             return (int) (Math.random() * 6);
         } else if (difficulty.equals("Medium")) {
-            return (int) (Math.random() * 2) + 6;
+            return (int) (Math.random() * 5) + 6;
         } else {
-            return (int) (Math.random() * 3) + 8;
+            return (int) (Math.random() * 3) + 11;
         }
     }
 
-    public int randomNum2() {
-        return (int) (Math.random() * 11);
+    public int randomNum2(String difficulty) {
+        if (difficulty.equals("Easy")) {
+            return (int) (Math.random() * 9)+1;
+        } else if (difficulty.equals("Medium")) {
+            return (int) (Math.random() * 7) + 4;
+        } else {
+            return (int) (Math.random() * 7) + 7;
+        }
     }
 
 }
