@@ -316,7 +316,6 @@ public class GameActivity extends AppCompatActivity {
     public void showNextLevel() {
         epicDialog.setContentView(R.layout.next_level_pop);
         epicDialog.setCancelable(false);
-        closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
@@ -325,15 +324,6 @@ public class GameActivity extends AppCompatActivity {
         popUpScore.setText(g.difficulty);
         btnAccept.setText("Next");
         sound.playWinSound();
-
-        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sound.playClicked();
-                nextTurn();
-                epicDialog.dismiss();
-            }
-        });
 
         PushDownAnim.setPushDownAnimTo(btnAccept).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -351,7 +341,6 @@ public class GameActivity extends AppCompatActivity {
     public void showFail() {
         epicDialog.setContentView(R.layout.failed_level_pop);
         epicDialog.setCancelable(false);
-        closePopupPositiveImg = epicDialog.findViewById(R.id.closePopupPositiveImg);
         btnAccept = epicDialog.findViewById(R.id.btnAccept);
         popUpScore = epicDialog.findViewById(R.id.popUpScore);
         messageTv = epicDialog.findViewById(R.id.messageTv);
@@ -373,19 +362,8 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sound.playClicked();
-                Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         epicDialog.show();
-
-
     }
 
     public void showEnd() {

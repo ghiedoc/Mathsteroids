@@ -64,7 +64,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.617"
-        app:srcCompat="@drawable/mathsteroidbaby" />
+        app:srcCompat="@drawable/maths" />
 
     <ImageView
         android:id="@+id/ivSetting"
