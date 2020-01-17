@@ -29,7 +29,7 @@ import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class GameActivity extends AppCompatActivity {
 
-    Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog, settingDialog;
+    Dialog epicDialog, pauseDialog, nameDialog, highScoreDialog, settingDialog, aboutDialog;
     ImageView closePopupPositiveImg;
     TextView tvScore, tv1, tv2, tv3, tv4, tvQuestion, titleTv, messageTv, popUpScore, tvName, etSCore;
     EditText etName;
@@ -65,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
         nameDialog = new Dialog(this);
         highScoreDialog = new Dialog(this);
         settingDialog = new Dialog(this);
+        aboutDialog = new Dialog(this);
 
         ivPause = findViewById(R.id.ivPause);
         ivSound = findViewById(R.id.ivSound);
@@ -509,6 +510,16 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        PushDownAnim.setPushDownAnimTo(ivAbout)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sound.playClicked();
+                        showAbout();
+                        settingDialog.dismiss();
+                    }
+                });
+
         PushDownAnim.setPushDownAnimTo(ivStar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -556,6 +567,25 @@ public class GameActivity extends AppCompatActivity {
 
         settingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         settingDialog.show();
+    }
+
+    /**
+     * show about dialog
+     */
+    public void showAbout() {
+        aboutDialog.setContentView(R.layout.about_pop);
+        aboutDialog.setCancelable(false);
+        closePopupPositiveImg = aboutDialog.findViewById(R.id.closePopupPositiveImg);
+
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aboutDialog.dismiss();
+            }
+        });
+
+        aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aboutDialog.show();
     }
 
     /**

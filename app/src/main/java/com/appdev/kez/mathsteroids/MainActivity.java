@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private SoundPlayer sound;
     Button playBtn;
     ImageView ivAbout, ivSound, ivStar, ivSetting, closePopupPositiveImg;
-    Dialog settingDialog;
+    Dialog settingDialog, aboutDialog;
     HomeWatcher mHomeWatcher;
     int musicCounter = 0;
     Animation frombutton;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         sound = new SoundPlayer(this);
 
         settingDialog = new Dialog(this);
+        aboutDialog = new Dialog(this);
 
         playBtn = findViewById(R.id.playBtn);
         ivAbout = findViewById(R.id.ivAbout);
@@ -260,6 +261,19 @@ public class MainActivity extends AppCompatActivity {
         ivStar = settingDialog.findViewById(R.id.ivStar);
         ivAbout = settingDialog.findViewById(R.id.ivAbout);
 
+        /**
+         * ivAbout
+         */
+        PushDownAnim.setPushDownAnimTo(ivAbout)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sound.playClicked();
+                        showAbout();
+                        settingDialog.dismiss();
+                    }
+                });
+
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -315,4 +329,22 @@ public class MainActivity extends AppCompatActivity {
         settingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         settingDialog.show();
     }
+
+    public void showAbout() {
+        aboutDialog.setContentView(R.layout.about_pop);
+        aboutDialog.setCancelable(false);
+        closePopupPositiveImg = aboutDialog.findViewById(R.id.closePopupPositiveImg);
+
+        PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aboutDialog.dismiss();
+            }
+        });
+
+        aboutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        aboutDialog.show();
+    }
+
+
 }
