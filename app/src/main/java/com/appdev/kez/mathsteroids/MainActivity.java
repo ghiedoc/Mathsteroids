@@ -277,6 +277,7 @@ public class MainActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 settingDialog.dismiss();
             }
         });
@@ -284,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(ivStar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 Intent intent = new Intent(MainActivity.this, com.appdev.kez.mathsteroids.showNameScore.class);
                 intent.putExtra("parent", "mainActivity");
                 startActivity(intent);
@@ -338,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(closePopupPositiveImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sound.playClicked();
                 aboutDialog.dismiss();
             }
         });

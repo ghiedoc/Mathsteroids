@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.thekhaeng.pushdownanim.PushDownAnim;
 
 public class showNameScore extends AppCompatActivity {
+
+    private SoundPlayer sound;
     TextView tvShow;
     Button btnPlayAgain, btnMainMenu;
     public static final String MY_PREFS_FILENAME = "com.appdev.kez.mathsteroids.Names";
@@ -31,15 +33,15 @@ public class showNameScore extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-//        /**
-//         * Fullscreen
-//         */
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        /**
+         * Fullscreen
+         */
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_show_name_score);
 
+        sound = new SoundPlayer(this);
 
         prefs = getSharedPreferences(MY_PREFS_FILENAME, MODE_PRIVATE);
 
@@ -98,6 +100,7 @@ public class showNameScore extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnPlayAgain).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sound.playClicked();
                 Toast.makeText(showNameScore.this, "Play", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.GameActivity.class);
                 startActivity(intent);
@@ -108,6 +111,7 @@ public class showNameScore extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnMainMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sound.playClicked();
                showNameScore.super.onBackPressed();
             }
         });
