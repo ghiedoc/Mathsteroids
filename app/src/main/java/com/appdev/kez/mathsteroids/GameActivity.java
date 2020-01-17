@@ -478,6 +478,7 @@ public class GameActivity extends AppCompatActivity {
                     if (!(etName.getText().toString().trim().length() > 5)) {
                         Intent intent = new Intent(getApplicationContext(), showNameScore.class);
                         String gname = etName.getText().toString().trim();
+                        intent.putExtra("parent", "gameActivity");
                         intent.putExtra("value", gname);
                         intent.putExtra("score", g.getScore());
                         startActivity(intent);
@@ -512,6 +513,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GameActivity.this, com.appdev.kez.mathsteroids.showNameScore.class);
+                intent.putExtra("parent", "gameDialogActivity");
                 startActivity(intent);
                 settingDialog.dismiss();
             }

@@ -3,6 +3,7 @@ package com.appdev.kez.mathsteroids;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.GnssClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,6 +55,16 @@ public class showNameScore extends AppCompatActivity {
         btnPlayAgain = (Button) findViewById(R.id.btnPlayAgain);
         btnMainMenu = (Button) findViewById(R.id.btnMainMenu);
 
+        String parent = getIntent().getExtras().getString("parent");
+
+        if(parent.equals("gameActivity")){
+            btnPlayAgain.setVisibility(View.VISIBLE);
+            btnMainMenu.setText("Quit");
+        }else{
+            btnPlayAgain.setVisibility(View.GONE);
+            btnMainMenu.setText("Back");
+        }
+
         try {
             st = getIntent().getExtras().getString("value");
             sc = getIntent().getExtras().getInt("score");
@@ -97,10 +108,7 @@ public class showNameScore extends AppCompatActivity {
         PushDownAnim.setPushDownAnimTo(btnMainMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(showNameScore.this, "Main Menu", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(showNameScore.this, com.appdev.kez.mathsteroids.MainActivity.class);
-                startActivity(intent);
-                finish();
+               showNameScore.super.onBackPressed();
             }
         });
 
