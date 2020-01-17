@@ -29,11 +29,11 @@
         app:srcCompat="@drawable/spacify_start" />
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:lottie_fileName="fireworks.json"
         app:lottie_autoPlay="true"
-        />
+        app:lottie_fileName="fireworks.json" />
 
     <Button
         android:id="@+id/playBtn"
@@ -41,7 +41,7 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="116dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/play_button"
@@ -49,64 +49,9 @@
         android:text="play"
         android:textColor="#ffffff"
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/exitBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/exitBtn"
-        android:layout_width="210dp"
-        android:layout_height="75dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="56dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/exit_button"
-        android:fontFamily="@font/righteous_regular"
-        android:text="exit"
-        android:textColor="#ffffff"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="@+id/start_bg_two"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivAbout"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:clickable="true"
-        android:src="@drawable/about"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivSound"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/sound_on_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/ivStar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/ivAbout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/star" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -120,6 +65,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.617"
         app:srcCompat="@drawable/mathsteroidbaby" />
+
+    <ImageView
+        android:id="@+id/ivSetting"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/settings" />
 
 
 </android.support.constraint.ConstraintLayout>
