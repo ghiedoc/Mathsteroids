@@ -13,12 +13,16 @@
             android:name=".BackgroundMusicService"
             android:enabled="true" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".GameActivity" />
-        <activity android:name=".showNameScore" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".showNameScore"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".SplashScreen">
+        <activity android:name=".SplashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
