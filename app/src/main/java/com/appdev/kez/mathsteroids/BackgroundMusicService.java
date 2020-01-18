@@ -30,8 +30,7 @@ public class BackgroundMusicService extends Service implements MediaPlayer.OnErr
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mPlayer = MediaPlayer.create(this, R.raw.background); //replace with your song name!
+        mPlayer = MediaPlayer.create(this, R.raw.lively); //replace with your song name!
         mPlayer.setOnErrorListener(this);
 
         if (mPlayer != null) {
@@ -78,7 +77,7 @@ public class BackgroundMusicService extends Service implements MediaPlayer.OnErr
     }
 
     public void startMusic() {
-        mPlayer = MediaPlayer.create(this, R.raw.background);
+        mPlayer = MediaPlayer.create(this, R.raw.lively);//replace with your song name!
         mPlayer.setOnErrorListener(this);
 
         if (mPlayer != null) {

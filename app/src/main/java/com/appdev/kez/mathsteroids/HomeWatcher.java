@@ -10,7 +10,6 @@ import android.content.IntentFilter;
  */
 public class HomeWatcher {
 
-    //static final String TAG = "hg";
     private Context mContext;
     private IntentFilter mFilter;
     private OnHomePressedListener mListener;
